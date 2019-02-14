@@ -6,6 +6,10 @@ import 'element-ui/lib/theme-chalk/index.css'
 import './assets/base.css'
 import App from './App'
 import router from './router'
+import axios from 'axios'
+axios.defaults.baseURL = 'http://localhost:8888/api/private/v1/'
+Vue.prototype.$http = axios
+
 // 和vuerouter一样, 挂载使用
 Vue.use(ElementUI)
 Vue.config.productionTip = false

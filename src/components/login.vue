@@ -8,22 +8,45 @@
             <el-form-item label="密码">
                 <el-input v-model="formData.password"></el-input>
             </el-form-item>
-            <el-button type="primary" class="login-btn">登录</el-button>
+            <el-button
+            @click.prevent="headleLogin()"
+            type="primary" class="login-btn">登录</el-button>
         </el-form>
     </div>
 </template>
 
 <script>
 export default {
-    data() {
-        return {
-            // labelPosition: "top", 控制对齐方式
-            formData: {
-                username:'',
-                password:''
-            }
-        }
+  data () {
+    return {
+      // labelPosition: "top", 控制对齐方式
+      formData: {
+        username: '',
+        password: ''
+      }
     }
+  },
+  methods: {
+    headleLogin () {
+      // post发送请求, 携带this.formData请求体, 返回res
+      this.$http.post('login', this.formData).then(res => {
+        console.log(res)
+        // 返回的结果解构赋值的写法
+        const {
+          data: {
+            data,
+            meta: { msg, status }
+          }
+        } = res
+        if (status === 200) {
+          console.log('sucess 发送成功')
+        } else {       
+          // 用户名或密码错误  element-ui组件 提示信息
+          console.log('err-- 发送失败')
+        }
+      })
+    }
+  }
 }
 </script>
 
