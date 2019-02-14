@@ -35,6 +35,7 @@ export default {
       const {
         data: {
           data: { token },
+          // data,
           meta: { msg, status }
         }
       } = res
@@ -59,7 +60,9 @@ export default {
 <style>
 .login-wrap {
   height: 100%;
-  background-color: #324152;
+  /* background-color: #324152; */
+  background: url('../assets/timg.jpg') no-repeat;
+  background-size: 100% 100%;
   /* 以下代码为盒子居中.伸缩布局中实现盒子juzhong */
   /* display: flex;
   justify-content: center;
