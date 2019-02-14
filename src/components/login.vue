@@ -27,24 +27,30 @@ export default {
     }
   },
   methods: {
-    headleLogin () {
+    // async 与await 把异步改的像同步
+    async headleLogin () {
       // post发送请求, 携带this.formData请求体, 返回res
-      this.$http.post('login', this.formData).then(res => {
-        console.log(res)
-        // 返回的结果解构赋值的写法
-        const {
-          data: {
-            data,
-            meta: { msg, status }
-          }
-        } = res
-        if (status === 200) {
-          console.log('sucess 发送成功')
-        } else {       
-          // 用户名或密码错误  element-ui组件 提示信息
-          console.log('err-- 发送失败')
+      const res = await this.$http.post('login', this.formData)
+      // 返回的结果解构赋值的写法
+      const {
+        data: {
+          data: { token },
+          meta: { msg, status }
         }
-      })
+      } = res
+      if (status === 200) {
+        // 提示: token值目前不需要关心 把token永久存储
+        localStorage.setItem('token', token)
+        // console.log('sucess 发送成功')
+        // 发送请求成功, 渲染home.vue, 修改标识, js代码编程式导航
+        this.$router.push({
+          name: 'home'
+        })
+      } else {
+        // 用户名或密码错误  element-ui组件 提示信息
+        //   console.log('err-- 发送失败')
+        this.$message.error(msg)
+      }
     }
   }
 }
