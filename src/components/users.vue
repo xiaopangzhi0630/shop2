@@ -14,7 +14,7 @@
           <!-- 注册搜索事件 和 清空搜索框事件 -->
           <el-button @click.prevent="searchUser()" slot="append" icon="el-icon-search"></el-button>
         </el-input>
-        <el-button type="primary">添加用户</el-button>
+        <el-button @click.prevent="showDiaAddUser()" type="primary">添加用户</el-button>
       </el-col>
     </el-row>
     <!-- 表格 -->
@@ -47,15 +47,34 @@
         </template>
       </el-table-column>
     </el-table>
-
     <!-- 分页 -->
     <!-- @size-change每页条数改变时触发 
      @current-change 原来是第一页,点击 2 页
      current-page 当前页码 -->
-
     <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pagenum" :page-sizes="[2, 4, 6]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="total">
     </el-pagination>
 
+    <!-- 对话框  添加用户弹出框 -->
+    <el-dialog title="添加用户" :visible.sync="dialogFormVisibleAdd">
+      <el-form :label-position="labelPosition" label-width="80px" :model="formdata">
+        <el-form-item label="用户名">
+          <el-input v-model="formdata.username"></el-input>
+        </el-form-item>
+        <el-form-item label="密码">
+          <el-input v-model="formdata.password"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱">
+          <el-input v-model="formdata.email"></el-input>
+        </el-form-item>
+        <el-form-item label="电话">
+          <el-input v-model="formdata.mobile"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisibleAdd = false">取 消</el-button>
+        <el-button type="primary" @click="dialogFormVisibleAdd = false">确 定</el-button>
+      </div>
+    </el-dialog>
   </el-card>
 </template>
 
@@ -71,6 +90,15 @@ export default {
       pagesize: 2,
       // 总条数
       total: "",
+      // 添加用户隐藏属性设置
+      dialogFormVisibleAdd: false,
+      // 添加用户数据
+      formdata: {
+        username: "",
+        password: "",
+        email: "",
+        mobile: ""
+      },
 
       list: []
     };
@@ -80,6 +108,11 @@ export default {
     this.gitTableData();
   },
   methods: {
+    //  添加用户
+    showDiaAddUser() {
+      this.dialogFormVisibleAdd = true;
+    },
+
     //  搜索框清空触发
     getAllUser() {
       this.gitTableData();
