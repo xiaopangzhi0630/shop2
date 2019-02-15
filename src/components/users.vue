@@ -9,8 +9,10 @@
     <!-- 搜索框 -->
     <el-row class="searchBox">
       <el-col>
-        <el-input placeholder="请输入内容" v-model="query" class="searchInput">
-          <el-button slot="append" icon="el-icon-search"></el-button>
+        <!-- clearable可以出现清空符号  @clear 清空内容触发事件-->
+        <el-input @clear="getAllUser()" clearable placeholder="请输入内容" v-model="query" class="searchInput">
+          <!-- 注册搜索事件 和 清空搜索框事件 -->
+          <el-button @click.prevent="searchUser()" slot="append" icon="el-icon-search"></el-button>
         </el-input>
         <el-button type="primary">添加用户</el-button>
       </el-col>
@@ -51,14 +53,7 @@
      @current-change 原来是第一页,点击 2 页
      current-page 当前页码 -->
 
-    <el-pagination 
-    @size-change="handleSizeChange" 
-    @current-change="handleCurrentChange" 
-    :current-page="pagenum" 
-    :page-sizes="[2, 4, 6]" 
-    :page-size="100" 
-    layout="total, sizes, prev, pager, next, jumper" 
-    :total="total">
+    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pagenum" :page-sizes="[2, 4, 6]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="total">
     </el-pagination>
 
   </el-card>
@@ -75,7 +70,8 @@ export default {
       // 每页显示条数
       pagesize: 2,
       // 总条数
-      total:-1,
+      total: "",
+
       list: []
     };
   },
@@ -84,12 +80,30 @@ export default {
     this.gitTableData();
   },
   methods: {
-    // 分页相关
-    handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+    //  搜索框清空触发
+    getAllUser() {
+      this.gitTableData();
     },
+
+    // 搜索查询
+    searchUser() {
+      this.pagenum = 1;
+      this.gitTableData();
+    },
+
+    // 分页相关
+    // @size-change每页条数改变时触发
+    handleSizeChange(val) {
+      // console.log(`每页 ${val} 条`);
+      this.pagenum = 1;
+      this.pagesize = val;
+      this.gitTableData();
+    },
+    // @current-change 原来是第一页,点击 2 页
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      // console.log(`当前页: ${val}`);
+      this.pagenum = val;
+      this.gitTableData();
     },
 
     // 表格数据发送请求
@@ -109,6 +123,7 @@ export default {
 
       const { data, meta: { msg, status } } = res.data;
       if (status == 200) {
+        this.total = data.total;
         this.list = data.users;
       }
     }
