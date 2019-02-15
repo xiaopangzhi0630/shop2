@@ -7,12 +7,19 @@ import './assets/base.css'
 import App from './App'
 import router from './router'
 import axios from 'axios'
+import moment from 'moment'
 axios.defaults.baseURL = 'http://localhost:8888/api/private/v1/'
 Vue.prototype.$http = axios
+
 
 // 和vuerouter一样, 挂载使用
 Vue.use(ElementUI)
 Vue.config.productionTip = false
+
+// 全局过滤器, 处理日期
+Vue.filter('formdata', (v) => {
+  return moment(v).format("YYYY-MM-DD")
+})
 
 /* eslint-disable no-new */
 new Vue({
