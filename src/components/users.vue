@@ -23,12 +23,14 @@
       <el-table-column prop="mobile" label="电话" width="150"></el-table-column>
       <!-- 过滤器格式化日期 -->
       <el-table-column label="创建日期" width="150">
+        <!-- 内层 list.row 表示的是list的每个对象-->
         <template slot-scope="scope">
           {{scope.row.create_time|formdata}}
         </template>
       </el-table-column>
       <!-- 前提: 单元格内容是一个组件, 不是porp的值 -->
       <el-table-column label="用户状态" width="150">
+        <!-- 内层 list.row 表示的是list的每个对象-->
         <template slot-scope="scope">
           <el-switch v-model="scope.row.mg_state" active-color="#13ce66" inactive-color="#ff4949">
           </el-switch>
@@ -36,13 +38,29 @@
       </el-table-column>
       <el-table-column label="操作" width="180">
         <!-- size="mini"设置图标大小 plain 设置素朴 -->
-        <el-button type="primary" icon="el-icon-edit" circle size="mini" plain></el-button>
-        <el-button type="danger" icon="el-icon-delete" circle size="mini" plain></el-button>
-        <el-button type="success" icon="el-icon-check" circle size="mini" plain></el-button>
+        <template slot-scope="scope">
+          <el-button type="primary" icon="el-icon-edit" circle size="mini" plain></el-button>
+          <el-button type="danger" icon="el-icon-delete" circle size="mini" plain></el-button>
+          <el-button type="success" icon="el-icon-check" circle size="mini" plain></el-button>
+        </template>
       </el-table-column>
     </el-table>
 
     <!-- 分页 -->
+    <!-- @size-change每页条数改变时触发 
+     @current-change 原来是第一页,点击 2 页
+     current-page 当前页码 -->
+
+    <el-pagination 
+    @size-change="handleSizeChange" 
+    @current-change="handleCurrentChange" 
+    :current-page="pagenum" 
+    :page-sizes="[2, 4, 6]" 
+    :page-size="100" 
+    layout="total, sizes, prev, pager, next, jumper" 
+    :total="total">
+    </el-pagination>
+
   </el-card>
 </template>
 
@@ -55,7 +73,9 @@ export default {
       // 当前页码
       pagenum: 1,
       // 每页显示条数
-      pagesize: 10,
+      pagesize: 2,
+      // 总条数
+      total:-1,
       list: []
     };
   },
@@ -64,6 +84,15 @@ export default {
     this.gitTableData();
   },
   methods: {
+    // 分页相关
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+    },
+
+    // 表格数据发送请求
     async gitTableData() {
       // 设置发送请求时的请求头-> axios库 ->找axios中有没有可以设置headers头部的API->看axios文档
       const AUTH_TOKEN = localStorage.getItem("token");

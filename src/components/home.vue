@@ -87,6 +87,7 @@
         </el-menu>
       </el-aside>
       <el-main class="mian">
+        <!-- <h2 class="welcome" >欢迎,登录后台管理系统!</h2> -->
         <router-view></router-view>
       </el-main>
     </el-container>
@@ -142,4 +143,10 @@ export default {
   line-height: 60px;
   text-align: center;
 }
+/*.welcome {
+  padding: 50px 0 0 50px;
+  box-sizing: border-box;
+  color: #fff;
+   background-color: aquamarine; 
+}*/
 </style>
