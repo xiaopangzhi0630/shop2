@@ -3,8 +3,8 @@
     <el-header>
       <el-row>
         <el-col :span="4">
-          <!-- <img @click.prevent="backHome()" src="../assets/timg.png" alt="图片记载失败"> -->
-          <img src="../assets/timg.png" alt="图片记载失败">
+          <img @click.prevent="backHome()" src="../assets/timg.png" alt="图片记载失败">
+          <!-- <img src="../assets/timg.png" alt="图片记载失败"> -->
         </el-col>
         <el-col :span="19" class="middle">
           <h2 style="color:#fff">品优购后台管理系统</h2>
@@ -109,11 +109,11 @@ export default {
   },
   methods: {
     // 返回首页
-    // backHome() {
-    //   this.$router.push({
-    //     name: "welcome"
-    //   });
-    // },
+    backHome() {
+      this.$router.push({
+        name: "welcome"
+      });
+    },
 
     // 退出
     handleLoginout() {

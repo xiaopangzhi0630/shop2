@@ -43,9 +43,8 @@ export default {
         // console.log('sucess 发送成功')
         // 发送请求成功, 渲染home.vue, 修改标识, js代码编程式导航
         this.$router.push({
-          name: 'home'
-          
-          // name: "welcome"
+          // name: 'home'
+          name: "welcome"
         });
       } else {
         // 用户名或密码错误  element-ui组件 提示信息
