@@ -3,6 +3,7 @@
     <!-- 面包屑 -->
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+      <!-- <el-breadcrumb-item :to="{ path: '/welcome' }">首页</el-breadcrumb-item> -->
       <el-breadcrumb-item>用户管理</el-breadcrumb-item>
       <el-breadcrumb-item>用户列表</el-breadcrumb-item>
     </el-breadcrumb>
@@ -56,7 +57,7 @@
 
     <!-- 对话框  添加用户弹出框 -->
     <el-dialog title="添加用户" :visible.sync="dialogFormVisibleAdd">
-      <el-form :label-position="labelPosition" label-width="80px" :model="formdata">
+      <el-form label-position="left" label-width="80px" :model="formdata">
         <el-form-item label="用户名">
           <el-input v-model="formdata.username"></el-input>
         </el-form-item>
@@ -89,7 +90,7 @@ export default {
       // 每页显示条数
       pagesize: 2,
       // 总条数
-      total: "",
+      total: 1,
       // 添加用户隐藏属性设置
       dialogFormVisibleAdd: false,
       // 添加用户数据

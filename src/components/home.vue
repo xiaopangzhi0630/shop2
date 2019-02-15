@@ -3,7 +3,8 @@
     <el-header>
       <el-row>
         <el-col :span="4">
-          <img src="../assets/logo.png" alt="图片记载失败">
+          <!-- <img @click.prevent="backHome()" src="../assets/timg.png" alt="图片记载失败"> -->
+          <img src="../assets/timg.png" alt="图片记载失败">
         </el-col>
         <el-col :span="19" class="middle">
           <h2 style="color:#fff">品优购后台管理系统</h2>
@@ -87,7 +88,6 @@
         </el-menu>
       </el-aside>
       <el-main class="mian">
-        <!-- <h2 class="welcome" >欢迎,登录后台管理系统!</h2> -->
         <router-view></router-view>
       </el-main>
     </el-container>
@@ -108,6 +108,13 @@ export default {
     }
   },
   methods: {
+    // 返回首页
+    // backHome() {
+    //   this.$router.push({
+    //     name: "welcome"
+    //   });
+    // },
+
     // 退出
     handleLoginout() {
       // 1.清除token
@@ -132,7 +139,7 @@ export default {
   background-color: #fff;
 }
 .mian {
-  background-color: gray;
+  background-color: #999;
 }
 .loginOut {
   line-height: 60px;
@@ -143,10 +150,8 @@ export default {
   line-height: 60px;
   text-align: center;
 }
-/*.welcome {
-  padding: 50px 0 0 50px;
-  box-sizing: border-box;
-  color: #fff;
-   background-color: aquamarine; 
-}*/
+img {
+  width: 256px;
+  height: 60px;
+}
 </style>
