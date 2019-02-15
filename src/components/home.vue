@@ -23,7 +23,7 @@
               <i class="el-icon-location"></i>
               <span>用户管理</span>
             </template>
-            <el-menu-item index="1-1">
+            <el-menu-item index="users">
               <i class="el-icon-menu"></i>
               用户列表
             </el-menu-item>
@@ -86,7 +86,9 @@
           </el-submenu>
         </el-menu>
       </el-aside>
-      <el-main class="mian">Main</el-main>
+      <el-main class="mian">
+        <router-view></router-view>
+      </el-main>
     </el-container>
   </el-container>
 </template>
@@ -108,13 +110,13 @@ export default {
     // 退出
     handleLoginout() {
       // 1.清除token
-      localStorage.clear()
+      localStorage.clear();
       // 2 跳转至login页面
       this.$router.push({
-        name:"login"
-      })
+        name: "login"
+      });
       // 3. 提示信息
-      this.$message.warning('退出成功!')
+      this.$message.warning("退出成功!");
     }
   }
 };
