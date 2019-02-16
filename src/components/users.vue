@@ -24,6 +24,7 @@
       <el-table-column prop="username" label="姓名" width="150"></el-table-column>
       <el-table-column prop="email" label="邮箱" width="180"></el-table-column>
       <el-table-column prop="mobile" label="电话" width="150"></el-table-column>
+
       <!-- 过滤器格式化日期 -->
       <el-table-column label="创建日期" width="150">
         <!-- 内层 list.row 表示的是list的每个对象-->
@@ -31,19 +32,22 @@
           {{scope.row.create_time|formdata}}
         </template>
       </el-table-column>
+
       <!-- 前提: 单元格内容是一个组件, 不是porp的值 -->
       <el-table-column label="用户状态" width="150">
         <!-- 内层 list.row 表示的是list的每个对象-->
         <template slot-scope="scope">
-          <el-switch v-model="scope.row.mg_state" active-color="#13ce66" inactive-color="#ff4949">
+          <!-- 注册事件改变事件 change -->
+          <el-switch @change="changeState(scope.row)" v-model="scope.row.mg_state" active-color="#13ce66" inactive-color="#ff4949">
           </el-switch>
         </template>
       </el-table-column>
+
       <el-table-column label="操作" width="180">
         <!-- size="mini"设置图标大小 plain 设置素朴 -->
         <template slot-scope="scope">
-          <el-button type="primary" icon="el-icon-edit" circle size="mini" plain></el-button>
-          <el-button type="danger" icon="el-icon-delete" circle size="mini" plain></el-button>
+          <el-button @click="showDiaEditUser(scope.row)" type="primary" icon="el-icon-edit" circle size="mini" plain></el-button>
+          <el-button @click="showMsgBox(scope.row)" type="danger" icon="el-icon-delete" circle size="mini" plain></el-button>
           <el-button type="success" icon="el-icon-check" circle size="mini" plain></el-button>
         </template>
       </el-table-column>
@@ -76,6 +80,26 @@
         <el-button type="primary" @click="addUser()">确 定</el-button>
       </div>
     </el-dialog>
+
+    <!-- 对话框  编辑用户弹出框 -->
+    <el-dialog title="添加用户" :visible.sync="dialogFormVisibleEdit">
+      <el-form label-position="left" label-width="80px" :model="formdata">
+        <el-form-item label="用户名">
+          <el-input disabled v-model="formdata.username"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱">
+          <el-input v-model="formdata.email"></el-input>
+        </el-form-item>
+        <el-form-item label="电话">
+          <el-input v-model="formdata.mobile"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisibleEdit = false">取 消</el-button>
+        <el-button type="primary" @click="editUser()">确 定</el-button>
+      </div>
+    </el-dialog>
+
   </el-card>
 </template>
 
@@ -93,6 +117,7 @@ export default {
       total: -1,
       // 添加用户隐藏属性设置
       dialogFormVisibleAdd: false,
+      dialogFormVisibleEdit: false,
       // 添加用户数据
       formdata: {
         username: "",
@@ -109,8 +134,79 @@ export default {
     this.gitTableData();
   },
   methods: {
-    // 添加用户,发送请求
-    // 缺少 : 表单验证
+    //  改变用户状态
+    async changeState(user) {
+      // 请求路径：users/:uId/state/:type
+      // type 用户状态
+      const res = await this.$http.put(
+        `users/${user.id}/state/${user.mg_state}`
+      );
+      const { meta: { msg, status } } = res.data;
+      if (status === 200) {
+        this.$message.success(msg);
+      }
+    },
+
+    // 编辑用户提交
+    async editUser() {
+      // 发送请求
+      // id- >当前用户id -> 数据 -> 1.data中没有 2.方法没有合适的实参
+      // 使用this.formdata 必须保证数据有值
+      const res = await this.$http.put(
+        `users/${this.formdata.id}`,
+        this.formdata
+      );
+      const { meta: { msg, status } } = res.data;
+      // console.log(res);
+      if (status === 200) {
+        // 关闭弹出框
+        this.dialogFormVisibleEdit = false;
+        // 刷新列表
+        this.gitTableData();
+      }
+    },
+
+    // 显示编辑弹出框
+    showDiaEditUser(user) {
+      this.dialogFormVisibleEdit = true;
+      this.formdata = user;
+    },
+
+    // 删除数据 引入element-ui组件
+    showMsgBox(user) {
+      // console.log(user);
+      this.$confirm("您确定要删除吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(async () => {
+          // 确认之后发送请求
+          const res = await this.$http.delete(`users/${user.id}`);
+          // console.log(res)
+          // 结构赋值
+          const { data, meta: { msg, status } } = res.data;
+          if (status === 200) {
+            this.$message.success("删除成功");
+            // 刷新列表
+            this.pagenum = 1;
+            this.gitTableData();
+          }
+          // this.$message({
+          //   type: "success",
+          //   message: "删除成功!"
+          // });
+        })
+        .catch(() => {
+          this.$message.info("已取消删除");
+          // this.$message({
+          //   type: "info",
+          //   message: "已取消删除"
+          // });
+        });
+    },
+
+    // 添加用户,发送请求 // 缺少 : 表单验证
     async addUser() {
       //1. 获取数据发送请求
       const res = await this.$http.post(`users`, this.formdata);
@@ -121,8 +217,11 @@ export default {
       this.gitTableData();
     },
 
-    //  添加用户
+    //  显示添加用户
     showDiaAddUser() {
+      // 显示弹出框先清空所有内容区域
+      this.formdata = {};
+
       this.dialogFormVisibleAdd = true;
     },
 
