@@ -48,7 +48,7 @@
         <template slot-scope="scope">
           <el-button @click="showDiaEditUser(scope.row)" type="primary" icon="el-icon-edit" circle size="mini" plain></el-button>
           <el-button @click="showMsgBox(scope.row)" type="danger" icon="el-icon-delete" circle size="mini" plain></el-button>
-          <el-button type="success" icon="el-icon-check" circle size="mini" plain></el-button>
+          <el-button @click="showDiaSetRole(scope.row)" type="success" icon="el-icon-check" circle size="mini" plain></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -100,6 +100,32 @@
       </div>
     </el-dialog>
 
+    <!-- 对话框  修改用户角色 -->
+    <el-dialog title="分配角色" :visible.sync="dialogFormVisibleRole">
+      <el-form :model="formdata" label-position="left" label-width="80px">
+        <el-form-item label="用户名">
+          <!-- {{formdata.username}} -->
+          {{currUsername}}
+        </el-form-item>
+        <!-- 1 . 默认显示请选择: 当v-model绑定的值和option的value值一样->显示label的值 -->
+        <!-- 2. 当通过页面操作->当选中某个label,此时,v-model绑定的数据值 = 被选中的label的value值 -->
+        <el-form-item label="角色">
+          {{selectVal}}
+          <el-select v-model="selectVal" placeholder="请选择角色名称">
+            <el-option label="请选择" :value="-1"></el-option>
+
+            <!-- 其余的5个下拉框动态生成, 遍历角色 -->
+            <el-option :label="item.roleName" :value="item.id" v-for="(item,i) in roles" :key="item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisibleRole = false">取 消</el-button>
+        <el-button type="primary" @click="dialogFormVisibleRole = false">确 定</el-button>
+      </div>
+    </el-dialog>
+
   </el-card>
 </template>
 
@@ -118,6 +144,8 @@ export default {
       // 添加用户隐藏属性设置
       dialogFormVisibleAdd: false,
       dialogFormVisibleEdit: false,
+      dialogFormVisibleRole: false,
+
       // 添加用户数据
       formdata: {
         username: "",
@@ -125,8 +153,13 @@ export default {
         email: "",
         mobile: ""
       },
-
-      list: []
+      // 刷新列表
+      list: [],
+      // 角色
+      selectVal: -1,
+      // 角色列表
+      roles: [],
+      currUsername: ""
     };
   },
   //   mounted() 页面加载完成自动调用
@@ -134,6 +167,20 @@ export default {
     this.gitTableData();
   },
   methods: {
+    // 显示角色修改
+    async showDiaSetRole(user) {
+      // this.formdata = user;
+      this.currUsername = user.username;
+      this.dialogFormVisibleRole = true;
+      // 发送请求获取角色列表
+      const res = await this.$http.get(`roles`);
+      console.log(res);
+      const { data, meta: { msg, status } } = res.data;
+      if (status === 200) {
+        this.roles = data;
+      }
+    },
+
     //  改变用户状态
     async changeState(user) {
       // 请求路径：users/:uId/state/:type
