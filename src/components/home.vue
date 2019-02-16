@@ -139,7 +139,7 @@ export default {
   background-color: #fff;
 }
 .mian {
-  background-color: #999;
+  background-color: #eee;
 }
 .loginOut {
   line-height: 60px;
