@@ -111,10 +111,11 @@
         <!-- 2. 当通过页面操作->当选中某个label,此时,v-model绑定的数据值 = 被选中的label的value值 -->
         <el-form-item label="角色">
           {{selectVal}}
-          <el-select v-model="selectVal" placeholder="请选择角色名称">
+          <el-select v-model="selectVal" placeholder="请选择角色名称"> // 34
             <el-option label="请选择" :value="-1"></el-option>
 
             <!-- 其余的5个下拉框动态生成, 遍历角色 -->
+            <!-- 30 31 34 39 40 -->
             <el-option :label="item.roleName" :value="item.id" v-for="(item,i) in roles" :key="item.id">
             </el-option>
           </el-select>
@@ -122,7 +123,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisibleRole = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisibleRole = false">确 定</el-button>
+        <el-button type="primary" @click="setRole()">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -139,7 +140,7 @@ export default {
       pagenum: 1,
       // 每页显示条数
       pagesize: 2,
-      // 总条数
+      // 总条数 -1是初始化数据, 数据库返回的结果会覆盖-1;
       total: -1,
       // 添加用户隐藏属性设置
       dialogFormVisibleAdd: false,
@@ -155,30 +156,60 @@ export default {
       },
       // 刷新列表
       list: [],
-      // 角色
-      selectVal: -1,
+      // 角色  当选中某个label,此时,v-model绑定的数据值 = 被选中的label的value值
+      selectVal: -1, //34
       // 角色列表
       roles: [],
-      currUsername: ""
+      // 角色弹出框的用户名
+      currUsername: "",
+      // 角色用户当前id
+      currUserId: -1
     };
   },
   //   mounted() 页面加载完成自动调用
   created() {
     this.gitTableData();
   },
+
   methods: {
+    // 角色设置, 发送请求
+    async setRole() {
+      const res = await this.$http.put(`users/${this.currUserId}/role`, {
+        // rid角色id  data中的selectVal 是最新的rid数据
+        rid: this.selectVal
+      });
+      // console.log(res);
+      const { data, meta: { msg, status } } = res.data;
+      if (status === 200) {
+        // 关闭对话框,和提示信息
+        this.dialogFormVisibleRole = false;
+        this.$message.success(msg);
+      }
+    },
+
     // 显示角色修改
     async showDiaSetRole(user) {
       // this.formdata = user;
+      this.currUserId = user.id;
       this.currUsername = user.username;
       this.dialogFormVisibleRole = true;
+
       // 发送请求获取角色列表
       const res = await this.$http.get(`roles`);
-      console.log(res);
+      // console.log(res);
       const { data, meta: { msg, status } } = res.data;
       if (status === 200) {
+        // 获取的5个角色
         this.roles = data;
+        // console.log(this.roles);
       }
+
+      // 获取当前用户的角色id   即 rid 然后到该用户的角色中获取当前用户的角色
+      const resp = await this.$http.get(`users/${user.id}`);
+      // console.log(resp);
+      // console.log(resp.data.data.rid);
+      // 每个角色有自己的角色rid  //34
+      this.selectVal = resp.data.data.rid;
     },
 
     //  改变用户状态
@@ -311,7 +342,7 @@ export default {
           this.pagesize
         }`
       );
-      console.log(res);
+      // console.log(res);
 
       const { data, meta: { msg, status } } = res.data;
       if (status == 200) {
