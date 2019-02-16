@@ -73,7 +73,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisibleAdd = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisibleAdd = false">确 定</el-button>
+        <el-button type="primary" @click="addUser()">确 定</el-button>
       </div>
     </el-dialog>
   </el-card>
@@ -90,7 +90,7 @@ export default {
       // 每页显示条数
       pagesize: 2,
       // 总条数
-      total: 1,
+      total: -1,
       // 添加用户隐藏属性设置
       dialogFormVisibleAdd: false,
       // 添加用户数据
@@ -109,6 +109,18 @@ export default {
     this.gitTableData();
   },
   methods: {
+    // 添加用户,发送请求
+    // 缺少 : 表单验证
+    async addUser() {
+      //1. 获取数据发送请求
+      const res = await this.$http.post(`users`, this.formdata);
+      // console.log(res);
+      // 2.关闭对话框
+      this.dialogFormVisibleAdd = false;
+      // 3. 刷新列表
+      this.gitTableData();
+    },
+
     //  添加用户
     showDiaAddUser() {
       this.dialogFormVisibleAdd = true;
