@@ -29,6 +29,8 @@ export default {
     async headleLogin() {
       // post发送请求, 携带this.formData请求体, 返回res
       const res = await this.$http.post("login", this.formData);
+      console.log(res);
+
       // 返回的结果解构赋值的写法
       const {
         data: {
@@ -39,6 +41,9 @@ export default {
       } = res;
       if (status === 200) {
         // 提示: token值目前不需要关心 把token永久存储
+        localStorage.setItem("logigUserName", data.username);
+        
+        
         localStorage.setItem("token", data.token);
         // console.log('sucess 发送成功')
         // 发送请求成功, 渲染home.vue, 修改标识, js代码编程式导航

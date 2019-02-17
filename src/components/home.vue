@@ -6,10 +6,11 @@
           <img @click.prevent="backHome()" src="../assets/upload/timg.png" alt="图片记载失败">
           <!-- <img src="../assets/timg.png" alt="图片记载失败"> -->
         </el-col>
-        <el-col :span="19" class="middle">
+        <el-col :span="17" class="middle">
           <h2 style="color:#fff">品优购后台管理系统</h2>
         </el-col>
-        <el-col :span="1">
+        <el-col :span="3">
+          欢迎 {{loginUser}},
           <a @click.prevent="handleLoginout()" href="#" class="loginOut">退出</a>
         </el-col>
       </el-row>
@@ -35,7 +36,7 @@
               <i class="el-icon-location"></i>
               <span>权限管理</span>
             </template>
-            <el-menu-item index="1-1">
+            <el-menu-item index="roles">
               <i class="el-icon-menu"></i>
               角色列表
             </el-menu-item>
@@ -69,7 +70,7 @@
               <i class="el-icon-location"></i>
               <span>订单管理</span>
             </template>
-            <el-menu-item index="1-1">
+            <el-menu-item index="orders">
               <i class="el-icon-menu"></i>
               订单列表
             </el-menu-item>
@@ -80,7 +81,7 @@
               <i class="el-icon-location"></i>
               <span>数据统计</span>
             </template>
-            <el-menu-item index="1-1">
+            <el-menu-item index="reports">
               <i class="el-icon-menu"></i>
               数据列表
             </el-menu-item>
@@ -96,6 +97,12 @@
 
 <script>
 export default {
+  data() {
+    return {
+      loginUser: localStorage.getItem("logigUserName")
+    };
+  },
+
   // 如果用户没有登录,不能进入home.vue页面, 显示login.vue
   // if(有没有正确的token)=>渲染homevue
   // if(没有token)修改标识/login, 显示渲染login.vue
