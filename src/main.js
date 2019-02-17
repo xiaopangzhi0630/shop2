@@ -3,18 +3,28 @@
 import Vue from 'vue'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-import './assets/base.css'
+import './assets/css/base.css'
 import App from './App'
 import CusBread from './components/cusBread.vue'  
 import router from './router'
-import axios from 'axios'
 import moment from 'moment'
-axios.defaults.baseURL = 'http://localhost:8888/api/private/v1/'
-Vue.prototype.$http = axios
+
+import httpServer from './assets/js/http.js'
+
+
+// import axios from 'axios'
+// axios.defaults.baseURL = 'http://localhost:8888/api/private/v1/'
+// const AUTH_TOKEN = localStorage.getItem("token");
+// axios.defaults.headers.common["Authorization"] = AUTH_TOKEN;
+// Vue.prototype.$http = axios
 
 
 // 和vuerouter一样, 挂载使用
+// 使用Vue插件
 Vue.use(ElementUI)
+Vue.use(httpServer)
+
+
 Vue.config.productionTip = false
 
 // 全局自定义组件

@@ -3,7 +3,7 @@
     <el-header>
       <el-row>
         <el-col :span="4">
-          <img @click.prevent="backHome()" src="../assets/timg.png" alt="图片记载失败">
+          <img @click.prevent="backHome()" src="../assets/upload/timg.png" alt="图片记载失败">
           <!-- <img src="../assets/timg.png" alt="图片记载失败"> -->
         </el-col>
         <el-col :span="19" class="middle">

@@ -60,7 +60,7 @@ export default {
 .login-wrap {
   height: 100%;
   /* background-color: #324152; */
-  background: url("../assets/timg.jpg") no-repeat;
+  background: url("../assets/upload/timg.jpg") no-repeat;
   background-size: 100% 100%;
   /* 以下代码为盒子居中.伸缩布局中实现盒子juzhong */
   /* display: flex;
