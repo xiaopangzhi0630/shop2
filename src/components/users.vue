@@ -110,8 +110,8 @@
         <!-- 1 . 默认显示请选择: 当v-model绑定的值和option的value值一样->显示label的值 -->
         <!-- 2. 当通过页面操作->当选中某个label,此时,v-model绑定的数据值 = 被选中的label的value值 -->
         <el-form-item label="角色">
-          {{selectVal}}
-          <el-select v-model="selectVal" placeholder="请选择角色名称"> // 34
+          <!-- {{selectVal}} -->
+          <el-select v-model="selectVal" placeholder="请选择角色名称">
             <el-option label="请选择" :value="-1"></el-option>
 
             <!-- 其余的5个下拉框动态生成, 遍历角色 -->
@@ -334,7 +334,6 @@ export default {
       // 设置发送请求时的请求头-> axios库 ->找axios中有没有可以设置headers头部的API->看axios文档
       // const AUTH_TOKEN = localStorage.getItem("token");
       // //   console.log(AUTH_TOKEN);
-
       // this.$http.defaults.headers.common["Authorization"] = AUTH_TOKEN;
 
       const res = await this.$http.get(

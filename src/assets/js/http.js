@@ -1,4 +1,3 @@
-
 // axios不是vue的插件, 把axios封装成vue的插件
 // 在mian.js 中使用插件 , Vue.use(axios)
 
@@ -17,10 +16,23 @@ httpServer.install = function (Vue) {
     // 登录的响应req和其他请求req一样
     // 拦截->axios拦截请求
 
+    // 添加请求拦截器
+    axios.interceptors.request.use(function (config) {
+        // 在发送请求之前做些什么
+        // 1. headers请求头   url 请求标识路径
+        // console.log(config);
+        // 当请求不是login的时候, 先设置请求头,然后在发起请求
+        if (config.url !== 'login') {
 
-    // 设置请求头的token
-    const AUTH_TOKEN = localStorage.getItem("token");
-    axios.defaults.headers.common["Authorization"] = AUTH_TOKEN;
+            // 设置请求头的token
+            const AUTH_TOKEN = localStorage.getItem("token");
+            config.headers.common["Authorization"] = AUTH_TOKEN;
+        }
+        return config;
+    }, function (error) {
+        // 对请求错误做些什么
+        return Promise.reject(error);
+    });
 
     // 4. 添加实例方法
     Vue.prototype.$http = axios;
