@@ -48,6 +48,6 @@ export default {
   box-sizing: border-box;
 }
 .tab {
-  margin-top: 20px;
+  margin-top: 16px;
 }
 </style>
