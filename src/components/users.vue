@@ -48,7 +48,8 @@
         <template slot-scope="scope">
           <el-button @click="showDiaEditUser(scope.row)" type="primary" icon="el-icon-edit" circle size="mini" plain></el-button>
           <el-button @click="showMsgBox(scope.row)" type="danger" icon="el-icon-delete" circle size="mini" plain></el-button>
-          <el-button @click="showDiaSetRole(scope.row)" type="success" icon="el-icon-check" circle size="mini" plain></el-button>
+          <el-button @click="showDiaSetRole(scope.row)" type="success" icon="el-icon-check" circle size="mini" plain>
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -56,12 +57,7 @@
     <!-- @size-change每页条数改变时触发 
      @current-change 原来是第一页,点击 2 页
      current-page 当前页码 -->
-    <el-pagination 
-    @size-change="handleSizeChange" 
-    @current-change="handleCurrentChange" 
-    :current-page="pagenum" 
-    :page-sizes="[2, 4, 6]" 
-    :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="total">
+    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pagenum" :page-sizes="[2, 4, 6]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="total">
     </el-pagination>
 
     <!-- 对话框  添加用户弹出框 -->
@@ -192,7 +188,7 @@ export default {
       }
     },
 
-    // 显示角色修改
+    // 显示  角色修改
     async showDiaSetRole(user) {
       // this.formdata = user;
       this.currUserId = user.id;

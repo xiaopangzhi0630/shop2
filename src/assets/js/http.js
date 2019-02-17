@@ -23,7 +23,7 @@ httpServer.install = function (Vue) {
         // console.log(config);
         // 当请求不是login的时候, 先设置请求头,然后在发起请求
         if (config.url !== 'login') {
-
+            
             // 设置请求头的token
             const AUTH_TOKEN = localStorage.getItem("token");
             config.headers.common["Authorization"] = AUTH_TOKEN;
