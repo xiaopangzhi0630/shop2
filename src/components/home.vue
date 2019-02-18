@@ -53,13 +53,13 @@ export default {
   // if(有没有正确的token)=>渲染homevue
   // if(没有token)修改标识/login, 显示渲染login.vue
   // 代码位置在mounted之前 ==>beforeMount   , beforeCreate 都可以
-  beforeMount() {
-    if (!localStorage.getItem("token")) {
-      this.$router.push({
-        name: "login"
-      });
-    }
-  },
+  // beforeMount() {
+  //   if (!localStorage.getItem("token")) {
+  //     this.$router.push({
+  //       name: "login"
+  //     });
+  //   }
+  // },
   created() {
     this.getMenus();
   },

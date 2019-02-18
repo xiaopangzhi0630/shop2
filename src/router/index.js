@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+import { Message } from 'element-ui';
+
 import Login from '@/components/login.vue'
 import Home from '@/components/home.vue'
 
@@ -12,7 +14,7 @@ import Roles from '@/components/roles.vue'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       // 登录页
@@ -65,3 +67,30 @@ export default new Router({
     }
   ]
 })
+
+// 路由导航卫士
+// 在路由配置生效前,代码自动来到下面位置
+// to 要去的路由配置对象
+// from 当前的路由配置对象
+router.beforeEach((to, from, next) => {
+  // 登录则继续执行
+  if (to.name === "login") {
+    next()
+  } else {
+    // 不是登录则执行  先获取token
+    const token = localStorage.getItem('token')
+    if (!token) {
+      Message.warning('请先登录用户');
+      // 返回登登录
+      router.push({
+        name: "login"
+      })
+      return;
+    }
+    // 如果有token 则跳转至home
+    next();
+  }
+})
+
+
+export default router;
