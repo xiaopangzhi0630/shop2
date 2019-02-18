@@ -16,22 +16,21 @@
           <el-row v-if="scope.row.children.length === 0">
             <el-span>未设置权限</el-span>
           </el-row>
-          
-          <!--  el-row>(el-col>el-tag+el-col>el-row>(el-col>el-tag+el-col>el-tag))-->
+
           <el-row class="level1" v-for="(item,i) in scope.row.children" :key="item.id">
             <el-col :span="4">
-              <el-tag type="success" closable>{{item.authName}}</el-tag>
+              <el-tag @close="deleteRights(scope.row,item)" type="success" closable>{{item.authName}}</el-tag>
               <i class="el-icon-arrow-right"></i>
             </el-col>
             <el-col :span="20">
               <el-row class="level2" v-for="(item1,i) in item.children" :key="item1.id">
                 <el-col :span="5">
-                  <el-tag type="warning" closable>{{item1.authName}}</el-tag>
+                  <el-tag @close="deleteRights(scope.row,item1)" type="warning" closable>{{item1.authName}}</el-tag>
                   <i class="el-icon-arrow-right"></i>
                 </el-col>
                 <el-col :span="19">
                   <!-- <el-row> -->
-                  <el-tag type="danger" class="level3" closable v-for="(item2,i) in item1.children" :key="item2.id">
+                  <el-tag @close="deleteRights(scope.row,item2)" type="danger" class="level3" closable v-for="(item2,i) in item1.children" :key="item2.id">
                     {{item2.authName}}
                   </el-tag>
                   <!-- </el-row> -->
@@ -70,6 +69,24 @@ export default {
     this.getRoles();
   },
   methods: {
+    // 删除角色
+    async deleteRights(role, rights) {
+      const res = await this.$http.delete(
+        `roles/${role.id}/rights/${rights.id}`
+      );
+      const { data, meta: { msg, status } } = res.data;
+      if (status === 200) {
+        // 提示信息
+        this.$message.success("删除权限成功!");
+        // 刷新数据
+        role.children = data;
+        // console.log(role);
+        
+        console.log(role.children);
+        
+      }
+    },
+
     // 点击显示权限设置
     showDiaSetRights() {},
 
