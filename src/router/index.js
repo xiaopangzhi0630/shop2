@@ -10,8 +10,10 @@ import Welcome from '@/components/welcome.vue'
 import Users from '@/components/users.vue'
 import Rights from '@/components/rights.vue'
 import Roles from '@/components/roles.vue'
-// import Goodslist from '@/components/goodslist.vue'
-// import Orders from '@/components/orders.vue'
+import Goodslist from '@/components/goodslist.vue'
+import Goodsadd from '@/components/goodsadd.vue'
+
+
 
 Vue.use(Router)
 
@@ -52,12 +54,18 @@ const router = new Router({
           path: '/roles',
           component: Roles
         },
-        // {
-        //   // 
-        //   name: 'goods',
-        //   path: '/goods',
-        //   component: Goodslist
-        // },
+        {
+          // 商品列表
+          name: 'goods',
+          path: '/goods',
+          component: Goodslist
+        },
+        {
+          // 添加商品
+          name: 'goodsadd',
+          path: '/goodsadd',
+          component: Goodsadd
+        },
         {
           // 订单
           name: 'orders',
