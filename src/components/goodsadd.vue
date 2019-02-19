@@ -1,13 +1,123 @@
 <template>
-    <div>goodsadd----</div>
+
+  <el-card class="box">
+    <!-- 面包屑 -->
+    <cus-bread level1="商品管理" level2="商品列表"></cus-bread>
+    <!-- 提示消息 -->
+    <el-alert class="middleMsg" title="添加商品信息" type="info" center show-icon :closable="false">
+    </el-alert>
+    <!-- 步骤条 -->
+    <el-steps :active="active*1" align-center finish-status="success">
+      <el-step title="基本信息"></el-step>
+      <el-step title="商品参数"></el-step>
+      <el-step title="商品属性"></el-step>
+      <el-step title="商品图片"></el-step>
+      <el-step title="商品内容"></el-step>
+    </el-steps>
+
+    <!-- tab标签 -->
+    <el-form class="form" label-position="top" label-width="80px" :model="formdata">
+      <el-tabs v-model="active" tab-position="left">
+        <el-tab-pane label="商品参数" name="1">
+
+          <el-form-item label="商品名称">
+            <el-input v-model="formdata.goods_name"></el-input>
+          </el-form-item>
+          <el-form-item label="商品价格">
+            <el-input v-model="formdata.goods_price"></el-input>
+          </el-form-item>
+          <el-form-item label="商品重量">
+            <el-input v-model="formdata.goods_weight"></el-input>
+          </el-form-item>
+          <el-form-item label="商品数量">
+            <el-input v-model="formdata.goods_number"></el-input>
+          </el-form-item>
+          <el-form-item label="商品分类">
+            <!-- 级联  selectedOptions保存的是cat_level的值
+            options 数据源
+            selectedOptions[] 可以给默认值,当选择 label 时,[被选择的 label 的 value 中]
+            props 配置选项 label/value/children->来源于 options 数据源 key 名 和 el-tree 很像-->
+            {{selectedOptions}}
+            <el-cascader 
+            expand-trigger="hover" 
+            :options="options" 
+            v-model="selectedOptions" 
+            @change="handleChange" 
+            :props="defaultProp">
+            </el-cascader>
+          </el-form-item>
+        </el-tab-pane>
+        <el-tab-pane label="基本信息" name="2">基本信息</el-tab-pane>
+        <el-tab-pane label="商品属性" name="3">商品属性</el-tab-pane>
+        <el-tab-pane label="商品图片" name="4">商品图片</el-tab-pane>
+        <el-tab-pane label="商品内容" name="5">商品内容</el-tab-pane>
+      </el-tabs>
+    </el-form>
+  </el-card>
+
 </template>
 
 <script>
 export default {
+  data() {
+    return {
+      active: "1",
+      formdata: {
+        goods_name: "",
+        goods_cat: "",
+        goods_price: "",
+        goods_number: "",
+        goods_weight: "",
+        goods_introduce: "",
+        pics: "",
+        attrs: ""
+      },
+      // 级联相关数据   options数据源
+      options: [],
+      selectedOptions: [1, 3, 6],
+      defaultProp: {
+        label: "cat_name",
+        value: "cat_id",
+        children: "children"
+      }
+    };
+  },
+  created() {
+    this.getCategory();
+  },
 
-}
+  methods: {
+    // 获取三级联动的商品数据
+    async getCategory() {
+      const res = await this.$http.get(`categories?type=3`);
+      // const res1 = await this.$http.get(`categories`)
+      // const res2 = await this.$http.get(`categories?type=1`)
+      const { data, meta: { msg, status } } = res.data;
+
+      if (status === 200) {
+        this.options = data;
+        console.log(this.options);
+      }
+    },
+
+    handleChange() {}
+  }
+};
 </script>
 
 <style>
-
+.box {
+  height: 100%;
+}
+.middleMsg {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+.el-step__title {
+  font-size: 14px;
+}
+.form {
+  height: 300px;
+  overflow: auto;
+}
 </style>
