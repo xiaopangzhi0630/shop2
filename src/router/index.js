@@ -10,6 +10,7 @@ import Welcome from '@/components/welcome.vue'
 import Users from '@/components/users.vue'
 import Rights from '@/components/rights.vue'
 import Roles from '@/components/roles.vue'
+// import Goodslist from '@/components/goodslist.vue'
 // import Orders from '@/components/orders.vue'
 
 Vue.use(Router)
@@ -51,6 +52,12 @@ const router = new Router({
           path: '/roles',
           component: Roles
         },
+        // {
+        //   // 
+        //   name: 'goods',
+        //   path: '/goods',
+        //   component: Goodslist
+        // },
         {
           // 订单
           name: 'orders',
