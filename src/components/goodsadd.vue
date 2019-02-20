@@ -14,9 +14,9 @@
       <el-step title="商品图片"></el-step>
       <el-step title="商品内容"></el-step>
     </el-steps>
-
-    <!-- tab标签 -->
+    <!-- 外表添加form表签  最后提交需要获取表单元素 -->
     <el-form class="form" label-position="top" label-width="80px" :model="formdata">
+    <!-- tab标签 -->
       <el-tabs v-model="active" tab-position="left" @tab-click="changeTab()">
         <el-tab-pane label="商品参数" name="1">
           <el-form-item label="商品名称">
@@ -61,7 +61,13 @@
           </el-form-item>
 
         </el-tab-pane>
-        <el-tab-pane label="商品内容" name="5">商品内容</el-tab-pane>
+        <el-tab-pane label="商品内容" name="5">
+          <el-form-item>
+            <el-button @click="addGoods()">添加商品</el-button>
+            <quill-editor></quill-editor>
+
+          </el-form-item>
+        </el-tab-pane>
       </el-tabs>
     </el-form>
   </el-card>
@@ -69,7 +75,17 @@
 </template>
 
 <script>
+// 局部引入富文本依赖
+import "quill/dist/quill.core.css";
+import "quill/dist/quill.snow.css";
+import "quill/dist/quill.bubble.css";
+import { quillEditor } from "vue-quill-editor";
+
 export default {
+  // 富文本设置components
+  components: {
+    quillEditor
+  },
   data() {
     return {
       //  active: "1", 默认显示页面的设置
@@ -109,6 +125,8 @@ export default {
   },
 
   methods: {
+    // 添加商品
+    addGoods() {},
     // 假上传
     handleSuccess(response, file, fileList) {
       console.log("上传成功");
@@ -205,5 +223,9 @@ export default {
 .form {
   height: 300px;
   overflow: auto;
+}
+/* 不懂,什么意思 */
+.ql-editor,.ql-blank{
+  min-height: 160px;
 }
 </style>
