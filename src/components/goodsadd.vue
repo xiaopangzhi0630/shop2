@@ -17,9 +17,8 @@
 
     <!-- tab标签 -->
     <el-form class="form" label-position="top" label-width="80px" :model="formdata">
-      <el-tabs v-model="active" tab-position="left">
+      <el-tabs v-model="active" tab-position="left" @tab-click="changeTab()">
         <el-tab-pane label="商品参数" name="1">
-
           <el-form-item label="商品名称">
             <el-input v-model="formdata.goods_name"></el-input>
           </el-form-item>
@@ -38,16 +37,17 @@
             selectedOptions[] 可以给默认值,当选择 label 时,[被选择的 label 的 value 中]
             props 配置选项 label/value/children->来源于 options 数据源 key 名 和 el-tree 很像-->
             {{selectedOptions}}
-            <el-cascader 
-            expand-trigger="hover" 
-            :options="options" 
-            v-model="selectedOptions" 
-            @change="handleChange" 
-            :props="defaultProp">
+            <el-cascader clearable expand-trigger="hover" :options="options" v-model="selectedOptions" @change="handleChange" :props="defaultProp">
             </el-cascader>
           </el-form-item>
         </el-tab-pane>
-        <el-tab-pane label="基本信息" name="2">基本信息</el-tab-pane>
+        <el-tab-pane label="基本信息" name="2">
+          <el-form-item :label="item.attr_name" v-for="(item,i) in arrDy" :key="item.attr_id">
+            <el-checkbox-group v-model="item.attr_vals">
+              <el-checkbox border :label="item1" v-for="(item1,i) in item.attr_vals" :key="i"></el-checkbox>
+            </el-checkbox-group>
+          </el-form-item>
+        </el-tab-pane>
         <el-tab-pane label="商品属性" name="3">商品属性</el-tab-pane>
         <el-tab-pane label="商品图片" name="4">商品图片</el-tab-pane>
         <el-tab-pane label="商品内容" name="5">商品内容</el-tab-pane>
@@ -61,6 +61,7 @@
 export default {
   data() {
     return {
+      //  active: "1", 默认显示页面的设置
       active: "1",
       formdata: {
         goods_name: "",
@@ -77,9 +78,14 @@ export default {
       selectedOptions: [1, 3, 6],
       defaultProp: {
         label: "cat_name",
-        value: "cat_id",
-        children: "children"
-      }
+        value: "cat_id"
+        // children: "children"
+      },
+      // 选中的参数  attr_vals
+      // checkList: [],
+
+      // 动态数据
+      arrDy: []
     };
   },
   created() {
@@ -87,6 +93,34 @@ export default {
   },
 
   methods: {
+    // tab别选中是触发
+    // 改变tab获取动态数据
+    async changeTab() {
+      // 先判断是不是active为2, 并且是三级商品  满足条件发送请求
+      if (this.active === "2") {
+        if (this.selectedOptions.length !== 3) {
+          this.$message.error("请先选择三级商品!");
+          return;
+        }
+        const res = await this.$http.get(
+          `categories/${this.selectedOptions[2]}/attributes?sel=many`
+        );
+        // console.log(res);
+        const { data, meta: { msg, status } } = res.data;
+
+        if (status === 200) {
+          this.arrDy = data;
+
+          // 遍历this.arrDy中的attr_vals
+          this.arrDy.forEach(item => {
+            item.attr_vals = item.attr_vals.trim().split(",");
+          });
+
+          console.log(this.arrDy);
+        }
+      }
+    },
+
     // 获取三级联动的商品数据
     async getCategory() {
       const res = await this.$http.get(`categories?type=3`);
@@ -96,7 +130,7 @@ export default {
 
       if (status === 200) {
         this.options = data;
-        console.log(this.options);
+        // console.log(this.options);
       }
     },
 
