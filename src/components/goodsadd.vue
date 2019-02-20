@@ -53,7 +53,14 @@
             <el-input v-model="item.attr_vals"></el-input>
           </el-form-item>
         </el-tab-pane>
-        <el-tab-pane label="商品图片" name="4">商品图片</el-tab-pane>
+        <el-tab-pane label="商品图片" name="4">
+          <el-form-item label="添加图片">
+            <el-upload multiple :headers="headers" action="http://localhost:8888/api/private/v1/upload" :on-remove="handleRemove" :on-success="handleSuccess" list-type="picture-card">
+              <i class="el-icon-plus"></i>
+            </el-upload>
+          </el-form-item>
+
+        </el-tab-pane>
         <el-tab-pane label="商品内容" name="5">商品内容</el-tab-pane>
       </el-tabs>
     </el-form>
@@ -91,7 +98,10 @@ export default {
       // 动态数据
       arrDy: [],
       // 处理静态数据
-      arrStatic: []
+      arrStatic: [],
+      headers: {
+        Authorization: localStorage.getItem("token")
+      }
     };
   },
   created() {
@@ -99,6 +109,22 @@ export default {
   },
 
   methods: {
+    // 假上传
+    handleSuccess(response, file, fileList) {
+      console.log("上传成功");
+      // 上传临时路劲
+      // response.data.tmp_path
+      // console.log(response);
+      // console.log(response.data.tmp_path);
+    },
+    // 删除
+    handleRemove(file, fileList) {
+      console.log("删除成功");
+      // console.log(file);
+      // console.log(file.response.data.tmp_path);
+      // file.response.data.tmp_path
+    },
+
     // tab别选中是触发
     async changeTab() {
       // 先判断是不是active为2, 并且是三级商品  满足条件发送请求
@@ -139,7 +165,6 @@ export default {
           );
           // console.log(res);
           const { data, meta: { msg, status } } = res.data;
-
           if (status === 200) {
             this.arrStatic = data;
             console.log(this.arrStatic);
