@@ -33,13 +33,13 @@
       <el-table-column label="操作" width="100">
         <template slot-scope="scope">
           <el-button plain size="mini" type="primary" icon="el-icon-edit" circle></el-button>
-          <el-button plain size="mini" type="danger" icon="el-icon-delete" circle></el-button>
+          <el-button @click="showMsgBox(scope.row)" plain size="mini" type="danger " icon="el-icon-delete " circle></el-button>
         </template>
       </el-table-column>
     </el-table>
 
     <!-- 分页组件 -->
-    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pagenum" :page-sizes="[10, 20, 30, 40]" :page-size="pagesize" layout="total, sizes, prev, pager, next, jumper" :total="total"></el-pagination>
+    <el-pagination @size-change="handleSizeChange " @current-change="handleCurrentChange " :current-page="pagenum " :page-sizes="[10, 20, 30, 40] " :page-size="pagesize " layout="total, sizes, prev, pager, next, jumper " :total="total "></el-pagination>
   </el-card>
 </template>
 
@@ -59,6 +59,27 @@ export default {
     this.loadData();
   },
   methods: {
+    // 显示删除框
+    showMsgBox(user) {
+       this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          // 发送删除请求goods/:id
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
+      
+    },
+
     handleSizeChange(val) {
       // console.log(`每页 ${val} 条`)
       this.pagesize = val;
