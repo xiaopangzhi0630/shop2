@@ -48,7 +48,11 @@
             </el-checkbox-group>
           </el-form-item>
         </el-tab-pane>
-        <el-tab-pane label="商品属性" name="3">商品属性</el-tab-pane>
+        <el-tab-pane label="商品属性" name="3">
+          <el-form-item :label="item.attr_name" v-for="(item,i) in arrStatic" :key="i">
+            <el-input v-model="item.attr_vals"></el-input>
+          </el-form-item>
+        </el-tab-pane>
         <el-tab-pane label="商品图片" name="4">商品图片</el-tab-pane>
         <el-tab-pane label="商品内容" name="5">商品内容</el-tab-pane>
       </el-tabs>
@@ -85,7 +89,9 @@ export default {
       // checkList: [],
 
       // 动态数据
-      arrDy: []
+      arrDy: [],
+      // 处理静态数据
+      arrStatic: []
     };
   },
   created() {
@@ -94,29 +100,50 @@ export default {
 
   methods: {
     // tab别选中是触发
-    // 改变tab获取动态数据
     async changeTab() {
       // 先判断是不是active为2, 并且是三级商品  满足条件发送请求
-      if (this.active === "2") {
+      if (this.active === "2" || this.active === "3") {
         if (this.selectedOptions.length !== 3) {
           this.$message.error("请先选择三级商品!");
           return;
         }
-        const res = await this.$http.get(
-          `categories/${this.selectedOptions[2]}/attributes?sel=many`
-        );
-        // console.log(res);
-        const { data, meta: { msg, status } } = res.data;
+        // 处理动态数据 sel=many
+        if (this.active === "2") {
+          const res = await this.$http.get(
+            `categories/${this.selectedOptions[2]}/attributes?sel=many`
+          );
+          // console.log(res);
+          const { data, meta: { msg, status } } = res.data;
 
-        if (status === 200) {
-          this.arrDy = data;
+          if (status === 200) {
+            this.arrDy = data;
 
-          // 遍历this.arrDy中的attr_vals
-          this.arrDy.forEach(item => {
-            item.attr_vals = item.attr_vals.trim().split(",");
-          });
+            // 遍历this.arrDy中的attr_vals
+            this.arrDy.forEach(item => {
+              // item.attr_vals = item.attr_vals.trim().split(",");
+              // 返回结果可能是空数组, 需要通过长度进行判断
+              item.attr_vals =
+                item.attr_vals.trim().length === 0
+                  ? []
+                  : item.attr_vals.trim().split(",");
+            });
 
-          console.log(this.arrDy);
+            // console.log(this.arrDy);
+          }
+        }
+
+        // 处理静态数据 sel=only
+        if (this.active === "3") {
+          const res = await this.$http.get(
+            `categories/${this.selectedOptions[2]}/attributes?sel=only`
+          );
+          // console.log(res);
+          const { data, meta: { msg, status } } = res.data;
+
+          if (status === 200) {
+            this.arrStatic = data;
+            console.log(this.arrStatic);
+          }
         }
       }
     },
