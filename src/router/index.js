@@ -13,6 +13,7 @@ import Roles from '@/components/roles.vue'
 import Goodslist from '@/components/goodslist.vue'
 import Goodsadd from '@/components/goodsadd.vue'
 import Cateparams from '@/components/params.vue'
+import Goodscate from '@/components/goodscate.vue'
 
 
 
@@ -74,16 +75,10 @@ const router = new Router({
           component: Cateparams
         },
         {
-          // 订单
-          name: 'orders',
-          path: '/orders',
-          // component: Orders
-        },
-        {
-          // 统计数据
-          name: 'reports',
-          path: '/reports',
-          // component: Reports
+          // 商品分类
+          name: 'categories',
+          path: '/categories',
+          component: Goodscate
         }
       ]
     }
