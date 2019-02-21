@@ -15,6 +15,9 @@ import Goodsadd from '@/components/goodsadd.vue'
 import Cateparams from '@/components/params.vue'
 import Goodscate from '@/components/goodscate.vue'
 import Orders from '@/components/order.vue'
+import Reports from '@/components/reports.vue'
+
+
 
 Vue.use(Router)
 
@@ -85,6 +88,13 @@ const router = new Router({
           name: 'orders',
           path: '/orders',
           component: Orders
+        }
+        ,
+        {
+          // 订单列表
+          name: 'reports',
+          path: '/reports',
+          component: Reports
         }
       ]
     }
