@@ -17,13 +17,13 @@
             <el-span>未设置权限</el-span>
           </el-row>
 
-          <el-row class="level1" v-for="(item,i) in scope.row.children" :key="item.id">
+          <el-row class="level1" v-for="(item) in scope.row.children" :key="item.id">
             <el-col :span="4">
               <el-tag @close="deleteRights(scope.row,item)" type="success" closable>{{item.authName}}</el-tag>
               <i class="el-icon-arrow-right"></i>
             </el-col>
             <el-col :span="20">
-              <el-row class="level2" v-for="(item1,i) in item.children" :key="item1.id">
+              <el-row class="level2" v-for="(item1) in item.children" :key="item1.id">
                 <el-col :span="5">
                   <el-tag @close="deleteRights(scope.row,item1)" type="warning" closable>{{item1.authName}}</el-tag>
                   <i class="el-icon-arrow-right"></i>
@@ -98,11 +98,9 @@ export default {
       // 在js中调用组件标签的js方法  -> ref操作dom
       // 1. 给要操作的页面元素el-tree设置ref="值"
       // 2. 在js中通过this.$refs.ref的值.js方法
-
       // 获取半选节点组成的数组
       const arr1 = this.$refs.treeDom.getHalfCheckedKeys();
       // console.log(arr1);
-
       // 获取全选节点组成的数组
       const arr2 = this.$refs.treeDom.getCheckedKeys();
       // console.log(arr2);
@@ -114,7 +112,6 @@ export default {
       });
       // console.log(res);
       const { data, meta: { msg, status } } = res.data;
-
       if (status === 200) {
         this.dialogFormVisible = false;
         // 刷新列表
@@ -122,7 +119,6 @@ export default {
         this.$message.success("权限修改成功!");
       }
     },
-
     // 点击显示权限设置
     async showDiaSetRights(role) {
       // 设置角色id,后面提交会使用
@@ -135,7 +131,6 @@ export default {
       if (status === 200) {
         this.treedata = data;
       }
-
       // 获取当前角色的已有的权限
       const temp = [];
       role.children.forEach(item1 => {
@@ -147,11 +142,9 @@ export default {
           });
         });
       });
-
       // console.log(temp);
       this.arrCheck = temp;
     },
-
     // 删除角色
     async deleteRights(role, rights) {
       const res = await this.$http.delete(
@@ -167,7 +160,6 @@ export default {
         // console.log(role.children);
       }
     },
-
     // 获取角色
     async getRoles() {
       const res = await this.$http.get(`roles`);
