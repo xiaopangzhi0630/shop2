@@ -37,7 +37,13 @@
             selectedOptions[] 可以给默认值,当选择 label 时,[被选择的 label 的 value 中]
             props 配置选项 label/value/children->来源于 options 数据源 key 名 和 el-tree 很像-->
             {{selectedOptions}}
-            <el-cascader clearable expand-trigger="hover" :options="options" v-model="selectedOptions" @change="handleChange" :props="defaultProp">
+            <el-cascader 
+            clearable 
+            expand-trigger="hover" 
+            :options="options" 
+            v-model="selectedOptions" 
+            @change="handleChange" 
+            :props="defaultProp">
             </el-cascader>
           </el-form-item>
         </el-tab-pane>
@@ -154,25 +160,16 @@ export default {
       const arr1 = this.arrDy.map(item => {
         return { attr_id: item.attr_id, attr_value: item.attr_vals };
       });
-      console.log(arr1);
-      
+      // console.log(arr1);
       // 获取静态数据
-      // const obj2 = { attr_id: "", attr_value: "" };
-      // const arr2 = [];
-      // this.arrStatic.forEach(item => {
-      //   obj2.attr_id = item.attr_id;
-      //   obj2.attr_value = item.attr_vals;
-      //   arr2.push(obj2);
-      // });
       const arr2 = this.arrStatic.map(item => {
-        return { attr_id: item.attr_id, attr_value: item.attr_vals };
+        return { attr_id: item.attr_id, attr_value: item.attr_vals };   
       });
-
-      console.log(arr2);
-      
-
+      // console.log(arr2);
       this.formdata.attrs = [...arr1, ...arr2];
-
+      
+      // console.log(this.formdata.attrs);
+      
       // 发送请求
       const res = await this.$http.post(`goods`, this.formdata);
       // console.log(res);
@@ -189,7 +186,6 @@ export default {
     handleSuccess(response, file, fileList) {
       // console.log("上传成功");
       // 上传临时路径
-      // console.log(response);
       // console.log(response.data.tmp_path);
       const tmpPath = response.data.tmp_path;
       this.formdata.pics.push({
@@ -230,12 +226,16 @@ export default {
         }
         // 处理动态数据 sel=many
         if (this.active === "2") {
+
+          // if(this.arrDy.length !== )
+
           const res = await this.$http.get(
             `categories/${this.selectedOptions[2]}/attributes?sel=many`
           );
           // console.log(res);
           const { data, meta: { msg, status } } = res.data;
           if (status === 200) {
+            // 判断是否发生\改变
             this.arrDy = data;
             // 遍历this.arrDy中的attr_vals
             this.arrDy.forEach(item => {
@@ -249,6 +249,7 @@ export default {
             // console.log(this.arrDy);
           }
         }
+
         // 处理静态数据 sel=only
         if (this.active === "3") {
           const res = await this.$http.get(
@@ -261,6 +262,7 @@ export default {
             // console.log(this.arrStatic);
           }
         }
+
       }
     },
 

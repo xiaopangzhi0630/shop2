@@ -61,23 +61,33 @@ export default {
   methods: {
     // 显示删除框
     showMsgBox(user) {
-       this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
+      console.log(user);
+
+      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(async () => {
           // 发送删除请求goods/:id
+          const res = await this.$http.delete(`goods/${user.goods_id}`);
+          console.log(res);
+          const { meta: { msg, status } } = res.data;
+          if (status === 200) {
+            this.loadData();
+          }
+
           this.$message({
-            type: 'success',
-            message: '删除成功!'
+            type: "success",
+            message: "删除成功!"
           });
-        }).catch(() => {
+        })
+        .catch(() => {
           this.$message({
-            type: 'info',
-            message: '已取消删除'
-          });          
+            type: "info",
+            message: "已取消删除"
+          });
         });
-      
     },
 
     handleSizeChange(val) {
