@@ -76,12 +76,7 @@ export default {
     // 显示删除框
     showMsgBox(user) {
       console.log(user);
-<<<<<<< HEAD
-
-      this.$confirm("are you sure delete?", "提示", {
-=======
       this.$confirm("您确定要删除吗?", "提示", {
->>>>>>> dev-order
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
