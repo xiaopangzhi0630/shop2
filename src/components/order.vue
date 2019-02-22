@@ -24,15 +24,8 @@
         </el-table>
 
         <!-- 分页 -->
-        <!-- <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="currentPage4"
-            :page-sizes="[100, 200, 300, 400]"
-            :page-size="100"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="400">
-            </el-pagination> -->
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[5,10,15]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="total">
+        </el-pagination>
 
         <!-- 对话框 -->
         <el-dialog title="修改订单地址" :visible.sync="dialogFormVisible">
@@ -54,9 +47,8 @@
 </template>
 
 <script>
-
 // 引入省市
-import Catlist from '../assets/js/city_data2017_element.js'
+import Catlist from "../assets/js/city_data2017_element.js";
 
 export default {
   data() {
@@ -68,24 +60,45 @@ export default {
       },
       // 级联选择器要绑定的数据
       catlist: [],
-      selectedOptions: []
+      selectedOptions: [],
       // defaultProp:{
       //   value:"value",
       //   label:"label",
       //   children:"children"
-      // }
+      // },
+      //  当前分页
+      currentPage: 1,
+      pageSize: 5,
+      total: -1
     };
   },
   created() {
     this.getData();
   },
   methods: {
+    //   分页
+    handleSizeChange(val) {
+      // console.log(`每页 ${val} 条`);
+      this.currentPage = 1;
+      this.pageSize = val;
+      this.getData();
+    },
+    //   当前页的信息
+    handleCurrentChange(val) {
+      // console.log(`当前页: ${val}`);
+
+      this.currentPage = val;
+      this.getData();
+    },
     // 获取表格数据
     async getData() {
-      const res = await this.$http.get(`orders?pagenum=1&pagesize=10`);
+      const res = await this.$http.get(
+        `orders?pagenum=${this.currentPage}&pagesize=${this.pageSize}`
+      );
       //   const res = await this.$http.get(`orders`);
       console.log(res);
       this.list = res.data.data.goods;
+      this.total = res.data.data.total;
     },
     // 打开对话框
     showEditdia(newOrders) {

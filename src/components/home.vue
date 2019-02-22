@@ -18,7 +18,8 @@
     <el-container>
       <el-aside class="aside" width="200px">
         <!-- router 开启路由模式,点击对应的导航, 当前的path就是激活导航index的值 -->
-        <el-menu default-active="1" :router="true" :unique-opened="true">
+        <!-- $route.name获取最后一次的路由, default-active默认激活 -->
+        <el-menu :default-active="$route.name" :router="true" :unique-opened="true">
           <!-- 用户管理  -->
           <el-submenu :index="item1.order+''" v-for="(item1,i) in menus" :key="item1.id">
             <template slot="title">

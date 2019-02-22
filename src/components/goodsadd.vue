@@ -37,13 +37,7 @@
             selectedOptions[] 可以给默认值,当选择 label 时,[被选择的 label 的 value 中]
             props 配置选项 label/value/children->来源于 options 数据源 key 名 和 el-tree 很像-->
             {{selectedOptions}}
-            <el-cascader 
-            clearable 
-            expand-trigger="hover" 
-            :options="options" 
-            v-model="selectedOptions" 
-            @change="handleChange" 
-            :props="defaultProp">
+            <el-cascader clearable expand-trigger="hover" :options="options" v-model="selectedOptions" @change="handleChange" :props="defaultProp">
             </el-cascader>
           </el-form-item>
         </el-tab-pane>
@@ -163,13 +157,13 @@ export default {
       // console.log(arr1);
       // 获取静态数据
       const arr2 = this.arrStatic.map(item => {
-        return { attr_id: item.attr_id, attr_value: item.attr_vals };   
+        return { attr_id: item.attr_id, attr_value: item.attr_vals };
       });
       // console.log(arr2);
       this.formdata.attrs = [...arr1, ...arr2];
-      
+
       // console.log(this.formdata.attrs);
-      
+
       // 发送请求
       const res = await this.$http.post(`goods`, this.formdata);
       // console.log(res);
@@ -226,9 +220,10 @@ export default {
         }
         // 处理动态数据 sel=many
         if (this.active === "2") {
+          // 判断
+          // if(this.arrDy.length === 0 ){
 
-          // if(this.arrDy.length !== )
-
+          // }
           const res = await this.$http.get(
             `categories/${this.selectedOptions[2]}/attributes?sel=many`
           );
@@ -262,7 +257,6 @@ export default {
             // console.log(this.arrStatic);
           }
         }
-
       }
     },
 

@@ -57,7 +57,14 @@
     <!-- @size-change每页条数改变时触发 
      @current-change 原来是第一页,点击 2 页
      current-page 当前页码 -->
-    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pagenum" :page-sizes="[2, 4, 6]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="total">
+    <el-pagination 
+    @size-change="handleSizeChange" 
+    @current-change="handleCurrentChange" 
+    :current-page="pagenum" 
+    :page-sizes="[2, 4, 6]" 
+    :page-size="100" 
+    layout="total, sizes, prev, pager, next, jumper" 
+    :total="total">
     </el-pagination>
 
     <!-- 对话框  添加用户弹出框 -->
