@@ -6,9 +6,7 @@
     <el-row class="searchArea">
       <el-col :span="24">
         <el-input v-model="query" class="searchInput" clearable placeholder="请输入内容" @clear="getAllData()">
-          <el-button @click="handleSearch" 
-          
-          slot="append" icon="el-icon-search"></el-button>
+          <el-button @click="handleSearch" slot="append" icon="el-icon-search"></el-button>
         </el-input>
         <el-button @click="$router.push({name:'goodsadd'})" type="success" plain>添加商品</el-button>
       </el-col>
@@ -67,8 +65,8 @@ export default {
       this.loadData();
     },
     // 点击x号触发
-    getAllData(){
-      this.loadData()
+    getAllData() {
+      this.loadData();
     },
 
     // 显示删除框
