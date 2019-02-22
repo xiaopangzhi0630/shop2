@@ -30,7 +30,7 @@
                 </el-col>
                 <el-col :span="19">
                   <!-- <el-row> -->
-                  <el-tag @close="deleteRights(scope.row,item2)" type="danger" class="level3" closable v-for="(item2,i) in item1.children" :key="item2.id">
+                  <el-tag @close="deleteRights(scope.row,item2)" type="danger" class="level3" closable v-for="item2 in item1.children" :key="item2.id">
                     {{item2.authName}}
                   </el-tag>
                   <!-- </el-row> -->
