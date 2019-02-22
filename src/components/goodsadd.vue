@@ -42,7 +42,7 @@
           </el-form-item>
         </el-tab-pane>
         <el-tab-pane label="基本信息" name="2">
-          <el-form-item :label="item.attr_name" v-for="(item,i) in arrDy" :key="item.attr_id">
+          <el-form-item :label="item.attr_name" v-for="(item) in arrDy" :key="item.attr_id">
             <el-checkbox-group v-model="item.attr_vals">
               <el-checkbox border :label="item1" v-for="(item1,i) in item.attr_vals" :key="i"></el-checkbox>
             </el-checkbox-group>

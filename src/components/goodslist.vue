@@ -5,7 +5,7 @@
     <!-- 搜索框 -->
     <el-row class="searchArea">
       <el-col :span="24">
-        <el-input v-model="searchValue" class="searchInput" clearable placeholder="请输入内容">
+        <el-input v-model="query" @clear="getAllData" class="searchInput" clearable placeholder="请输入内容">
           <el-button @click="handleSearch" slot="append" icon="el-icon-search"></el-button>
         </el-input>
         <el-button @click="$router.push({name:'goodsadd'})" type="success" plain>添加商品</el-button>
@@ -47,7 +47,7 @@
 export default {
   data() {
     return {
-      searchValue: "",
+      query: "",
       // loading: false,
       list: [],
       pagenum: 1,
@@ -62,8 +62,7 @@ export default {
     // 显示删除框
     showMsgBox(user) {
       console.log(user);
-
-      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+      this.$confirm("您确定要删除吗?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
@@ -74,6 +73,7 @@ export default {
           console.log(res);
           const { meta: { msg, status } } = res.data;
           if (status === 200) {
+            // this.pagenum = 1;
             this.loadData();
           }
 
@@ -101,10 +101,23 @@ export default {
       this.pagenum = val;
       this.loadData();
     },
-    handleSearch() {},
+    // 搜索
+    handleSearch() {
+      this.loadData();
+    },
+
+    // 清除搜索
+    getAllData() {
+      this.pagenum = 1;
+      this.loadData();
+    },
+
+    // 获取列表
     async loadData() {
       const { data: resData } = await this.$http.get(
-        `goods?pagenum=${this.pagenum}&pagesize=${this.pagesize}`
+        `goods?query=${this.query}&pagenum=${this.pagenum}&pagesize=${
+          this.pagesize
+        }`
       );
       this.total = resData.data.total;
       this.list = resData.data.goods;
