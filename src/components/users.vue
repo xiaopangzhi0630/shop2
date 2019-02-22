@@ -124,7 +124,7 @@
 
             <!-- 其余的5个下拉框动态生成, 遍历角色 -->
             <!-- 30 31 34 39 40 -->
-            <el-option :label="item.roleName" :value="item.id" v-for="(item,i) in roles" :key="item.id">
+            <el-option :label="item.roleName" :value="item.id" v-for="(item) in roles" :key="item.id">
             </el-option>
           </el-select>
         </el-form-item>
