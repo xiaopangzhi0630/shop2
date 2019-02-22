@@ -5,11 +5,7 @@
     <!-- 搜索框 -->
     <el-row class="searchArea">
       <el-col :span="24">
-<<<<<<< HEAD
-        <el-input v-model="query" class="searchInput" clearable placeholder="请输入内容" @clear="getAllData()">
-=======
         <el-input v-model="query" @clear="getAllData" class="searchInput" clearable placeholder="请输入内容">
->>>>>>> dev-order
           <el-button @click="handleSearch" slot="append" icon="el-icon-search"></el-button>
         </el-input>
         <el-button @click="$router.push({name:'goodsadd'})" type="success" plain>添加商品</el-button>
@@ -115,9 +111,6 @@ export default {
       this.pagenum = val;
       this.loadData();
     },
-<<<<<<< HEAD
-    // 获取数据
-=======
     // 搜索
     handleSearch() {
       this.loadData();
@@ -130,7 +123,6 @@ export default {
     },
 
     // 获取列表
->>>>>>> dev-order
     async loadData() {
       const { data: resData } = await this.$http.get(
         `goods?query=${this.query}&pagenum=${this.pagenum}&pagesize=${
