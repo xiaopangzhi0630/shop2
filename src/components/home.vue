@@ -21,12 +21,12 @@
         <!-- $route.name获取最后一次的路由, default-active默认激活 -->
         <el-menu :default-active="$route.name" :router="true" :unique-opened="true">
           <!-- 用户管理  -->
-          <el-submenu :index="item1.order+''" v-for="(item1,i) in menus" :key="item1.id">
+          <el-submenu :index="item1.order+''" v-for="(item1,i) in menus" :key="i">
             <template slot="title">
               <i class="el-icon-location"></i>
               <span>{{item1.authName}}</span>
             </template>
-            <el-menu-item :index="item2.path+''" v-for="(item2,i) in item1.children" :key="item2.id">
+            <el-menu-item :index="item2.path+''" v-for="(item2,i) in item1.children" :key="i">
               <i class="el-icon-menu"></i>
               {{item2.authName}}
             </el-menu-item>
