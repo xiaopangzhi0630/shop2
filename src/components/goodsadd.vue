@@ -173,7 +173,8 @@ export default {
           name: "goods"
         });
       } else {
-        this.$message.error(msg);
+        // http.js中统一处理拦截器
+        // this.$message.error(msg);
       }
     },
     // 假   上传图片

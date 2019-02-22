@@ -1,5 +1,5 @@
 <template>
-  <el-card>
+  <el-card class="box">
     <!-- 面包屑 -->
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <!-- <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item> -->
@@ -19,7 +19,7 @@
       </el-col>
     </el-row>
     <!-- 表格 -->
-    <el-table :data="list" style="width: 100%">
+    <el-table v-loading="loading" :data="list" style="width: 100%">
       <el-table-column prop="id" label="#" width="80"></el-table-column>
       <el-table-column prop="username" label="姓名" width="150"></el-table-column>
       <el-table-column prop="email" label="邮箱" width="180"></el-table-column>
@@ -57,14 +57,7 @@
     <!-- @size-change每页条数改变时触发 
      @current-change 原来是第一页,点击 2 页
      current-page 当前页码 -->
-    <el-pagination 
-    @size-change="handleSizeChange" 
-    @current-change="handleCurrentChange" 
-    :current-page="pagenum" 
-    :page-sizes="[2, 4, 6]" 
-    :page-size="100" 
-    layout="total, sizes, prev, pager, next, jumper" 
-    :total="total">
+    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pagenum" :page-sizes="[2, 4, 6]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="total">
     </el-pagination>
 
     <!-- 对话框  添加用户弹出框 -->
@@ -171,7 +164,9 @@ export default {
       // 角色弹出框的用户名
       currUsername: "",
       // 角色用户当前id
-      currUserId: -1
+      currUserId: -1,
+      // 加载动画
+      loading: true
     };
   },
   //   mounted() 页面加载完成自动调用
@@ -350,9 +345,10 @@ export default {
         }`
       );
       // console.log(res);
-
       const { data, meta: { msg, status } } = res.data;
       if (status == 200) {
+        // 加载动画
+        this.loading = false;
         this.total = data.total;
         this.list = data.users;
       }
@@ -362,6 +358,9 @@ export default {
 </script>
 
 <style>
+.box{
+  height: 100%;
+}
 .searchInput {
   width: 360px;
 }
