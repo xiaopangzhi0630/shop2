@@ -7,8 +7,10 @@
 
     <!-- 表格
         roleName	角色名称	不能为空
-        roleDesc	角色描述	可以为空 -->
-    <el-table height="400px" :data="roles" style="width: 100%">
+        roleDesc	角色描述	可以为空 
+        expand-change 展开行就会触发
+        -->
+    <el-table @expand-change="changeRow" height="400px" :data="roles" style="width: 100%">
       <!-- 展开项 -->
       <el-table-column type="expand">
         <template slot-scope="scope">
@@ -93,6 +95,17 @@ export default {
     this.getRoles();
   },
   methods: {
+    // 展开某一行就会触发  expandedRows获取的是展开行的数组
+    changeRow(row, expandedRows) {
+      // console.log(expandedRows.length);
+      
+      if(expandedRows.length > 1){
+        // 移除数组的第一项
+        expandedRows.shift();
+        
+      }
+    },
+
     // 更改权限
     async setRights() {
       // 在js中调用组件标签的js方法  -> ref操作dom
