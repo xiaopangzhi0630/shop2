@@ -20,22 +20,26 @@ const createLintingRule = () => ({
 })
 
 module.exports = {
-  // 配置CDN
-  externals: {
-    "vue": "Vue",
-    "vue-router": "VueRouter",
-    "axios": "axios",
-    "element-ui": "ELEMENT",
-    "moment": "moment",
-    
-    "echarts": "echarts"
-  },
-
-
   context: path.resolve(__dirname, '../'),
   entry: {
     app: './src/main.js'
   },
+
+
+  // 配置CDN
+  externals: {
+
+    "vue": "Vue",
+    "vue-router": "VueRouter",
+    "element-ui": "ELEMENT",
+    "moment": "moment",
+    "axios": "axios",
+    "echarts": "echarts"
+
+  },
+
+
+
 
 
   output: {
