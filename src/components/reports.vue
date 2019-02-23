@@ -11,7 +11,7 @@
 
 <script>
 // 第一步
-import MyEcharts from "echarts";
+import echarts from "echarts";
 
 export default {
   data() {
@@ -23,7 +23,7 @@ export default {
   methods: {
     async initEcharts() {
       //  第二步   基于准备好的dom，初始化echarts实例
-      const myChart = MyEcharts.init(document.getElementById("main"));
+      const myChart = echarts.init(document.getElementById("main"));
 
       // 发送请求获取后台数据
 

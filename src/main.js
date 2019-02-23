@@ -1,8 +1,8 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
-import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
+import ELEMENT from 'element-ui'
+// import 'element-ui/lib/theme-chalk/index.css'
 import './assets/css/base.css'
 import App from './App'
 import CusBread from './components/cusBread.vue'  
@@ -21,7 +21,7 @@ import httpServer from './assets/js/http.js'
 
 // 和vuerouter一样, 挂载使用
 // 使用Vue插件
-Vue.use(ElementUI)
+Vue.use(ELEMENT)
 Vue.use(httpServer)
 
 
